@@ -9,7 +9,7 @@ class studentList extends StatefulWidget {
 class _studentListState extends State<studentList> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('users')
-      .where('wrool', isEqualTo: 'Student')
+      .where('wrool', isEqualTo: 'Trainee')
       .snapshots();
   @override
   Widget build(BuildContext context) {

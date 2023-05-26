@@ -1,3 +1,5 @@
+import 'package:demoapp/reusable_widgets/reusable_widgets.dart';
+import 'package:demoapp/utils/color_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +28,16 @@ class _ForgotpassState extends State<Forgotpass> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                color: Colors.blue[900],
+                //color: Colors.blue[900],
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.70,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  hexStringToColor("CB2B93"),
+                  hexStringToColor("9546C4"),
+                  hexStringToColor("5E61F4")
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+
                 child: Center(
                   child: Container(
                     margin: EdgeInsets.all(12),
@@ -38,45 +47,51 @@ class _ForgotpassState extends State<Forgotpass> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          logoWidget("assets/images/lock.png"),
                           Text(
-                            "Forgot\n"
-                            "Password",
+                            "Forget\nPassword",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 50,
+                              fontSize: 35,
                             ),
                           ),
+                          SizedBox(height: 10),
                           Text(
-                            "Dont worry...",
+                            "Provide your account's email for which you want to reset your password!",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
+
                           SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+
                           TextFormField(
                             controller: emailController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: Colors.white.withOpacity(0.7),
                               hintText: 'Email',
                               enabled: true,
+                              prefixIcon: Icon(Icons.email),
                               contentPadding: const EdgeInsets.only(
-                                  left: 14.0, bottom: 8.0, top: 8.0),
+                                left: 14.0,
+                                bottom: 8.0,
+                                top: 14.5,
+                              ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(20),
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(20),
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             textInputAction: TextInputAction.done,
@@ -97,6 +112,43 @@ class _ForgotpassState extends State<Forgotpass> {
                             },
                             keyboardType: TextInputType.emailAddress,
                           ),
+
+                          // TextFormField(
+                          //   controller: emailController,
+                          //   decoration: InputDecoration(
+                          //     filled: true,
+                          //     fillColor: Colors.white,
+                          //     hintText: 'Email',
+                          //     enabled: true,
+                          //     contentPadding: const EdgeInsets.only(
+                          //         left: 14.0, bottom: 8.0, top: 8.0),
+                          //     focusedBorder: OutlineInputBorder(
+                          //       borderSide: new BorderSide(color: Colors.white),
+                          //       borderRadius: new BorderRadius.circular(20),
+                          //     ),
+                          //     enabledBorder: UnderlineInputBorder(
+                          //       borderSide: new BorderSide(color: Colors.white),
+                          //       borderRadius: new BorderRadius.circular(20),
+                          //     ),
+                          //   ),
+                          //   textInputAction: TextInputAction.done,
+                          //   validator: (value) {
+                          //     if (value!.length == 0) {
+                          //       return "Email cannot be empty";
+                          //     }
+                          //     if (!RegExp(
+                          //             "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                          //         .hasMatch(value)) {
+                          //       return ("Please enter a valid email");
+                          //     } else {
+                          //       return null;
+                          //     }
+                          //   },
+                          //   onSaved: (value) {
+                          //     // emailController.text = value!;
+                          //   },
+                          //   keyboardType: TextInputType.emailAddress,
+                          // ),
                           SizedBox(
                             height: 30,
                           ),
@@ -146,60 +198,58 @@ class _ForgotpassState extends State<Forgotpass> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Visibility(
-                              maintainSize: true,
-                              maintainAnimation: true,
-                              maintainState: true,
-                              visible: visible,
-                              child: Container(
-                                  child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ))),
+
+                          // Visibility(
+                          //     maintainSize: true,
+                          //     maintainAnimation: true,
+                          //     maintainState: true,
+                          //     visible: visible,
+                          //     child: Container(
+                          //         child: CircularProgressIndicator(
+                          //       color: Colors.white,
+                          //     ))),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-              Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Text(
-                        "Made by",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "WEBFUN",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          color: Colors.yellowAccent[400],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Container(
+              //   color: Colors.white,
+              //   width: MediaQuery.of(context).size.width,
+              //   child: Center(
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         SizedBox(
+              //           height: 10,
+              //         ),
+              //         SizedBox(
+              //           height: 40,
+              //         ),
+              //         Text(
+              //           "Made by",
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.bold,
+              //             fontSize: 20,
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           height: 5,
+              //         ),
+              //         Text(
+              //           "WEBFUN",
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.bold,
+              //             fontSize: 30,
+              //             color: Colors.yellowAccent[400],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

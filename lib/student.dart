@@ -48,7 +48,7 @@ class _StudentState extends State<Student> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Student",
+          "Trainee",
         ),
         actions: [
           IconButton(
@@ -77,6 +77,15 @@ class _StudentState extends State<Student> {
             ),
             ElevatedButton(
               child: Text("Calculate Body Mass Index"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InputPage()),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: Text("Day View Screen"),
               onPressed: () {
                 Navigator.push(
                   context,

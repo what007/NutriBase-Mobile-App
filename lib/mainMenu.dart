@@ -48,7 +48,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Student",
+          "Nutritional Plan",
         ),
         actions: [
           IconButton(
