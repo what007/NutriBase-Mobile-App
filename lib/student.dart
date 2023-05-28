@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demoapp/src/page/day-view/day-view.dart';
+import 'package:demoapp/src/page/history/history_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'Screens/input_page.dart';
+import 'package:demoapp/routes/router.dart';
 
 import 'login.dart';
 import 'mainMenu.dart';
@@ -89,7 +92,16 @@ class _StudentState extends State<Student> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InputPage()),
+                  MaterialPageRoute(builder: (context) => DayViewScreen()),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: Text("History Screen"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistoryScreen()),
                 );
               },
             ),
