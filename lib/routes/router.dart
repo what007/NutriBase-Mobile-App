@@ -1,6 +1,6 @@
 import 'package:demoapp/src/model/food_track_task.dart';
 import 'package:flutter/cupertino.dart';
-import '../student.dart';
+import '../trainee.dart';
 import 'route_constants.dart';
 import 'package:demoapp/main.dart';
 import 'package:demoapp/views/undefined_view.dart';

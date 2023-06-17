@@ -1,4 +1,4 @@
-import 'posts.dart';
+import 'post_nutri_plan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

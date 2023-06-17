@@ -1,5 +1,5 @@
-import 'StudentList.dart';
-import 'posts.dart';
+import 'trainee_list.dart';
+import 'post_nutri_plan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

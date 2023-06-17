@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "nutribot-ubct",
+  "private_key_id": "435c134c6ba0b24c18698930a8b3648e190ec21f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC1VRW6obKh+pB8\nw5aEWLIrb5dvPlAlngeNvv/dVJIvyRMq30pJWjqDtI+6EVz840YzAlPQ854kRWYq\nu95CeEZkoxXSFeiD8xSSCTUmE/ALJVQvLo5widNfxgvUOEU+MstZmilGwtjstBBF\nG5yhuZuXQsJ+9zfSI4S+Tm2Tfmm275E5a2vDPcxiWoi+Ck1iLyJYDN+Wsg276+JJ\nhxriD8ACD0F1b+CwWhDn1wQSqhnTmPioFEj8Ihq0YuSJog7dSrEOhW4kEtZVTVFe\n+K86W8ohYOYiOd8M6jF7+jpKfiK0IeDliTonEne8dWGpOSCA5v6vb05+TO5hpWjE\nFcnB20/nAgMBAAECggEAR3ffdo1ggGLnK6VS35qtrlzvDJM8t3bPd1h+M9evPlI7\n0bvr5XlAcsRpmWZahfl1o4kZS9OY0qbfm5wr/3q0E9oLMaAc4lSeGOi0H+vfwiTW\nRzpMPaK0wpyl8OC0ucz/RLNz7UXChZh6iSJW247x+e4ABladk58YJIF4wpciR0z9\n1YAAEz0SKh6fYQa7oL/uY0eHgmMKxI0AuzclBTOFGRyAn/vJc9/JAJSUc7dluGxO\nmKCKxoXtfeH754BV4BY7eqFM0572DCPjzO1j2eKzQ1WSkhjnUE/vgG5AbjwNKRMq\nVVOrKP0eohXSqblrdO8qVnygj6ZPftWiXq/bLAPfQQKBgQDwC6hCxAR3gfZswETX\neRYs3NntWllu/+80AZ80SkZDXLvKPSZrpY6Z8XZFBzCUER6yfld8RGGO7wEp5tXk\nODOQYvf9URg0gRUVbsuQi1kNT0GgoVS9htUEZUA2YaUcWQE9l1Hldg8i3SrRJIFt\nSfmxtLxaDe9rgYPoaD9U/5od0QKBgQDBYm5Jc/ayOdbsPmjTiNi+lRZV3IqZdzoi\nxahFI9fk+2qj37LgLtas2sUnYmpD5KuPojQsVABVLvBKVH+j7lTMQoc96Y7sVCGO\n9s4GxAlJiUSyOt6TY3spZfUOY/oIyGwbFZ/i93USyzoa3CvJCPQqkmgJlg7To3He\nCK68AAJoNwKBgQDiPKpl2qa3F8bv8jovtpC+0ZuXR0r5AcApjMnGl6YnQNRApGd8\nlzmSP3APWNphAs2ivs6ncS9dbkbzffrjMFDw6UX++ppMicgcPiMfZSYWFDevM75R\nLi3ACcl+N4NM91ni+aYXFLDpU/dRzA0rusfZw5Stb2rSMOvoc7AU5R4UsQKBgQCt\n6ZF5aVqAqdeJGg83vaf+rSErEm1q2nhj8RIFK9jqytf6jCDX0Aer6ArKAo3ChRFs\n2NjGzLyH3vCmSBuKF7oW//WUTkkEbBzJ71cVapNXmKU5DAxCzIJklpat3GduIqBm\nMypY+WZGApI8uah+4RiEeKorhNHMrv6mSXSrCe8gPQKBgQC4zg90+jBC25NHkiAp\nGuG0KQfejj4fp5+BVdKp/CLTPp6Xz2NMkZkZ11nteDE3hYc/SJpxtxnrUvF0Y9FU\n0C70zECR8aZ4Bdl+8V19lcuSZq/lf3e2mvKP7TuCz68Pjj1oU2sDYEY6W5/DGYrB\n0mZbEYYFBYL7LvFBDZE/KhnWjw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "nutribot@nutribot-ubct.iam.gserviceaccount.com",
+  "client_id": "109414537636060353712",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nutribot%40nutribot-ubct.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

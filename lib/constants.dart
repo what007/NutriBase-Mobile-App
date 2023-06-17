@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const kactiveCardColor = Color(0xFF1D1E33);
-const kinactiveCardColor = Color(0xFF111328);
+const kactiveCardColor = Color.fromARGB(255, 25, 52, 99);
+const kinactiveCardColor = Color(0xFF1D1E33);
 const ksliderInactiveColor = Color(0xFF8D8E98);
 const kbottomContainerHeight = 80.0;
 const kbottomContainerColor = Color(0xFFEB1555);

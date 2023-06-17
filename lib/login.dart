@@ -1,4 +1,4 @@
-import 'package:demoapp/mainMenu.dart';
+import 'package:demoapp/view_nutri_post.dart';
 import 'package:demoapp/reusable_widgets/reusable_widgets.dart';
 import 'package:demoapp/utils/color_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';

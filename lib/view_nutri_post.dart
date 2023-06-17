@@ -1,24 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:demoapp/home.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'login.dart';
+import 'view_nutri_post.dart';
 import 'model.dart';
 
-class Student extends StatefulWidget {
+class MenuScreen extends StatefulWidget {
   String id;
-  Student({required this.id});
+  MenuScreen({required this.id});
   @override
-  _StudentState createState() => _StudentState(id: id);
+  _MenuScreenState createState() => _MenuScreenState(id: id);
 }
 
-class _StudentState extends State<Student> {
+class _MenuScreenState extends State<MenuScreen> {
   String id;
   var rooll;
   var emaill;
   UserModel loggedInUser = UserModel();
 
-  _StudentState({required this.id});
+  _MenuScreenState({required this.id});
   @override
   void initState() {
     super.initState();
@@ -45,7 +48,7 @@ class _StudentState extends State<Student> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Student",
+          "Nutritional Plan",
         ),
         actions: [
           IconButton(

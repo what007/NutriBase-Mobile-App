@@ -1,63 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demoapp/home.dart';
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'addpost.dart';
+import 'editpost.dart';
 
-import 'login.dart';
-import 'mainMenu.dart';
-import 'model.dart';
-
-class MenuScreen extends StatefulWidget {
-  String id;
-  MenuScreen({required this.id});
+class posts extends StatefulWidget {
   @override
-  _MenuScreenState createState() => _MenuScreenState(id: id);
+  _postsState createState() => _postsState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
-  String id;
-  var rooll;
-  var emaill;
-  UserModel loggedInUser = UserModel();
-
-  _MenuScreenState({required this.id});
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users") //.where('uid', isEqualTo: user!.uid)
-        .doc(id)
-        .get()
-        .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
-    }).whenComplete(() {
-      CircularProgressIndicator();
-      setState(() {
-        emaill = loggedInUser.email.toString();
-        rooll = loggedInUser.wrool.toString();
-        id = loggedInUser.uid.toString();
-      });
-    });
-  }
-
-  @override
+class _postsState extends State<posts> {
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('posts').snapshots();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Nutritional Plan",
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => addnote()));
+        },
+        child: Icon(
+          Icons.add,
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              logout(context);
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
+      ),
+      appBar: AppBar(
+        title: Text('Posts'),
       ),
       body: StreamBuilder(
         stream: _usersStream,
@@ -79,7 +47,15 @@ class _MenuScreenState extends State<MenuScreen> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (_, index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            editnote(docid: snapshot.data!.docs[index]),
+                      ),
+                    );
+                  },
                   child: Column(
                     children: [
                       SizedBox(
@@ -116,17 +92,6 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Future<void> logout(BuildContext context) async {
-    CircularProgressIndicator();
-    await FirebaseAuth.instance.signOut();
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
       ),
     );
   }

@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'model.dart';
-import 'student.dart';
-import 'teacher.dart';
+import 'trainee.dart';
+import 'coach.dart';
 
 class HomePage extends StatefulWidget {
   @override
