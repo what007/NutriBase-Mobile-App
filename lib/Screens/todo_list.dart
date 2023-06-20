@@ -778,6 +778,7 @@ class _TodoListState extends State<TodoList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo List"),
+        backgroundColor: Colors.purple,
       ),
       body: SafeArea(
         child: Padding(

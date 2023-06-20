@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demoapp/addpost.dart';
 import 'package:flutter/material.dart';
-
-import 'addpost.dart';
-import 'editpost.dart';
+import 'infopost.dart';
 
 class posts extends StatefulWidget {
   @override
@@ -12,86 +11,82 @@ class posts extends StatefulWidget {
 class _postsState extends State<posts> {
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('posts').snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => addnote()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => AddPost()),
+          );
         },
         child: Icon(
           Icons.add,
+          color: Colors.white,
         ),
       ),
       appBar: AppBar(
         title: Text('Posts'),
+        backgroundColor: Colors.purple,
       ),
-      body: StreamBuilder(
-        stream: _usersStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("something is wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListView.builder(
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.purple, Colors.white],
+          ),
+        ),
+        child: StreamBuilder(
+          stream: _usersStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text("Something is wrong");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (_, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            editnote(docid: snapshot.data!.docs[index]),
-                      ),
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                InfoPost(snapshot.data!.docs[index])));
                   },
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 3,
-                          right: 3,
-                        ),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          title: Text(
-                            snapshot.data!.docChanges[index].doc['title'],
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
-                          ),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 3,
+                    shadowColor: Colors.purple[200],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        snapshot.data!.docs[index].get('title'),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
+                      trailing: Icon(Icons.edit, color: Colors.purple[600]),
+                    ),
                   ),
                 );
               },
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

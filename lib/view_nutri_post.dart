@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demoapp/home.dart';
+import 'package:demoapp/view_post_details.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,11 +26,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users") //.where('uid', isEqualTo: user!.uid)
-        .doc(id)
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection("users").doc(id).get().then((value) {
       this.loggedInUser = UserModel.fromMap(value.data());
     }).whenComplete(() {
       CircularProgressIndicator();
@@ -44,78 +41,86 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('posts').snapshots();
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Nutritional Plan",
+          style: TextStyle(color: Colors.white),
         ),
+        backgroundColor: Colors.deepPurple,
         actions: [
           IconButton(
             onPressed: () {
               logout(context);
             },
             icon: Icon(Icons.logout),
+            color: Colors.white,
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: _usersStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("something is wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (_, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 3,
-                          right: 3,
-                        ),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          title: Text(
-                            snapshot.data!.docChanges[index].doc['title'],
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.purple, Colors.white],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: StreamBuilder(
+            stream: _usersStream,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Something is wrong");
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            ),
-          );
-        },
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (_, index) {
+                  DocumentSnapshot post = snapshot.data!.docs[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewPostDetail(post: post),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      elevation: 3,
+                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          snapshot.data!.docs[index].get('title'),
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 16,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

@@ -26,6 +26,7 @@ class _chatbotState extends State<chatbot> {
     return Scaffold(
       appBar: AppBar(
         title: Text('NutriBot'),
+        backgroundColor: Colors.purple,
       ),
       body: Container(
         child: Column(

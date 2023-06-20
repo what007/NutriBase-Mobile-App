@@ -35,6 +35,7 @@ class _InputPageState extends State<InputPage> {
         title: Center(
           child: Text('BMI CALCULATOR'),
         ),
+        backgroundColor: Colors.purple,
       ),
       body: Container(
         color: Color.fromARGB(255, 104, 94, 94),

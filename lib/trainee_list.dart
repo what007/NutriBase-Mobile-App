@@ -16,6 +16,7 @@ class _studentListState extends State<studentList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Students'),
+        backgroundColor: Colors.purple,
       ),
       body: StreamBuilder(
         stream: _usersStream,

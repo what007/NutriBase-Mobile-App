@@ -1,72 +1,130 @@
-import 'post_nutri_plan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 
-class editnote extends StatefulWidget {
-  DocumentSnapshot docid;
-  editnote({required this.docid});
+class EditPost extends StatefulWidget {
+  final DocumentSnapshot post;
+
+  EditPost(this.post);
 
   @override
-  _editnoteState createState() => _editnoteState();
+  _EditPostState createState() => _EditPostState();
 }
 
-class _editnoteState extends State<editnote> {
-  TextEditingController title = TextEditingController();
+class _EditPostState extends State<EditPost> {
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
 
   @override
   void initState() {
-    title = TextEditingController(text: widget.docid.get('title'));
     super.initState();
+    titleController = TextEditingController(text: widget.post.get('title'));
+    descriptionController =
+        TextEditingController(text: widget.post.get('description'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Edit Post'),
+        backgroundColor: Colors.deepPurple,
         actions: [
-          MaterialButton(
+          IconButton(
             onPressed: () {
-              widget.docid.reference.update({
-                'title': title.text,
+              widget.post.reference.update({
+                'title': titleController.text,
+                'description': descriptionController.text,
               }).whenComplete(() {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => posts()));
+                Navigator.pop(context);
               });
             },
-            child: Text("save"),
-          ),
-          MaterialButton(
-            onPressed: () {
-              widget.docid.reference.delete().whenComplete(() {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => posts()));
-              });
-            },
-            child: Text("delete"),
+            icon: Icon(Icons.save),
+            color: Colors.white,
           ),
         ],
       ),
       body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(border: Border.all()),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.deepPurple.shade100, Colors.white],
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Title",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
                 child: TextField(
-                  controller: title,
-                  expands: true,
-                  maxLines: null,
+                  controller: titleController,
+                  enabled: false,
                   decoration: InputDecoration(
-                    hintText: 'title',
+                    hintText: 'Enter title here',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-          ],
+              SizedBox(height: 16),
+              Text(
+                "Description",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    hintText: 'Enter description here',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  maxLines: null,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

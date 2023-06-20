@@ -28,6 +28,7 @@ class _RegisterState extends State<Register> {
       new TextEditingController();
   final TextEditingController name = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
+  final TextEditingController nameController = new TextEditingController();
   final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
@@ -66,27 +67,50 @@ class _RegisterState extends State<Register> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 80,
+                          height: 55,
                         ),
                         logoWidget("assets/images/logo1.png"),
-                        // SizedBox(
-                        //   height: 30,
-                        // ),
-                        // Text(
-                        //   "Register Now",
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //     color: Colors.white,
-                        //     fontSize: 40,
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 10,
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
-
+                        TextFormField(
+                          controller:
+                              nameController, // Update the controller to use a name controller
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.3),
+                            hintText: 'Name', // Update the hintText to 'Name'
+                            enabled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 14.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            prefixIcon: Icon(Icons.person_outline,
+                                color: Colors.white70),
+                          ),
+                          validator: (value) {
+                            if (value!.length == 0) {
+                              return "Name cannot be empty"; // Update the validation error message
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (value) {},
+                          keyboardType: TextInputType
+                              .text, // Set the keyboardType to TextInputType.text
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
@@ -122,51 +146,9 @@ class _RegisterState extends State<Register> {
                           onChanged: (value) {},
                           keyboardType: TextInputType.emailAddress,
                         ),
-
-                        // TextFormField(
-                        //   controller: emailController,
-                        //   decoration: InputDecoration(
-                        //     filled: true,
-                        //     fillColor: Colors.white,
-                        //     hintText: 'Email',
-                        //     enabled: true,
-                        //     contentPadding: const EdgeInsets.only(
-                        //         left: 14.0, bottom: 8.0, top: 8.0),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //     enabledBorder: UnderlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //   ),
-                        //   validator: (value) {
-                        //     if (value!.length == 0) {
-                        //       return "Email cannot be empty";
-                        //     }
-                        //     if (!RegExp(
-                        //             "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                        //         .hasMatch(value)) {
-                        //       return ("Please enter a valid email");
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   },
-                        //   onChanged: (value) {},
-                        //   keyboardType: TextInputType.emailAddress,
-                        // ),
-//test
-                        // reusableTextField(
-                        //     "Email", Icons.email, false, _emailTextController),
-
-                        // reusableTextFormField("Enter Email", Icons.email, false,
-                        //     _emailTextController),
-
                         SizedBox(
                           height: 20,
                         ),
-
                         TextFormField(
                           obscureText: _isObscure,
                           controller: passwordController,
@@ -219,52 +201,9 @@ class _RegisterState extends State<Register> {
                           },
                           onChanged: (value) {},
                         ),
-
-                        // TextFormField(
-                        //   obscureText: _isObscure,
-                        //   controller: passwordController,
-                        //   decoration: InputDecoration(
-                        //     suffixIcon: IconButton(
-                        //         icon: Icon(_isObscure
-                        //             ? Icons.visibility_off
-                        //             : Icons.visibility),
-                        //         onPressed: () {
-                        //           setState(() {
-                        //             _isObscure = !_isObscure;
-                        //           });
-                        //         }),
-                        //     filled: true,
-                        //     fillColor: Colors.white,
-                        //     hintText: 'Password',
-                        //     enabled: true,
-                        //     contentPadding: const EdgeInsets.only(
-                        //         left: 14.0, bottom: 8.0, top: 15.0),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //     enabledBorder: UnderlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //   ),
-                        //   validator: (value) {
-                        //     RegExp regex = new RegExp(r'^.{6,}$');
-                        //     if (value!.isEmpty) {
-                        //       return "Password cannot be empty";
-                        //     }
-                        //     if (!regex.hasMatch(value)) {
-                        //       return ("please enter valid password min. 6 character");
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   },
-                        //   onChanged: (value) {},
-                        // ),
                         SizedBox(
                           height: 20,
                         ),
-
                         TextFormField(
                           obscureText: _isObscure2,
                           controller: confirmpassController,
@@ -308,49 +247,9 @@ class _RegisterState extends State<Register> {
                           },
                           onChanged: (value) {},
                         ),
-
-                        // TextFormField(
-                        //   obscureText: _isObscure2,
-                        //   controller: confirmpassController,
-                        //   decoration: InputDecoration(
-                        //     suffixIcon: IconButton(
-                        //         icon: Icon(_isObscure2
-                        //             ? Icons.visibility_off
-                        //             : Icons.visibility),
-                        //         onPressed: () {
-                        //           setState(() {
-                        //             _isObscure2 = !_isObscure2;
-                        //           });
-                        //         }),
-                        //     filled: true,
-                        //     fillColor: Colors.white,
-                        //     hintText: 'Confirm Password',
-                        //     enabled: true,
-                        //     contentPadding: const EdgeInsets.only(
-                        //         left: 14.0, bottom: 8.0, top: 15.0),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //     enabledBorder: UnderlineInputBorder(
-                        //       borderSide: new BorderSide(color: Colors.white),
-                        //       borderRadius: new BorderRadius.circular(20),
-                        //     ),
-                        //   ),
-                        //   validator: (value) {
-                        //     if (confirmpassController.text !=
-                        //         passwordController.text) {
-                        //       return "Password did not match";
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   },
-                        //   onChanged: (value) {},
-                        // ),
                         SizedBox(
                           height: 20,
                         ),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -402,47 +301,6 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Text(
-                        //       "Role : ",
-                        //       style: TextStyle(
-                        //         fontSize: 20,
-                        //         fontWeight: FontWeight.bold,
-                        //         color: Colors.white,
-                        //       ),
-                        //     ),
-                        //     DropdownButton<String>(
-                        //       dropdownColor: Color.fromARGB(255, 123, 226, 204),
-                        //       isDense: true,
-                        //       isExpanded: false,
-                        //       iconEnabledColor: Colors.white,
-                        //       focusColor: Colors.white,
-                        //       items: options.map((String dropDownStringItem) {
-                        //         return DropdownMenuItem<String>(
-                        //           value: dropDownStringItem,
-                        //           child: Text(
-                        //             dropDownStringItem,
-                        //             style: TextStyle(
-                        //               color: Colors.white,
-                        //               fontWeight: FontWeight.bold,
-                        //               fontSize: 20,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }).toList(),
-                        //       onChanged: (newValueSelected) {
-                        //         setState(() {
-                        //           _currentItemSelected = newValueSelected!;
-                        //           rool = newValueSelected;
-                        //         });
-                        //       },
-                        //       value: _currentItemSelected,
-                        //     ),
-                        //   ],
-                        // ),
                         SizedBox(
                           height: 20,
                         ),
@@ -519,12 +377,22 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  // void signUp(String email, String password, String rool) async {
+  //   CircularProgressIndicator();
+  //   if (_formkey.currentState!.validate()) {
+  //     await _auth
+  //         .createUserWithEmailAndPassword(email: email, password: password)
+  //         .then((value) => {postDetailsToFirestore(email, rool)})
+  //         .catchError((e) {});
+  //   }
+  // }
+
   void signUp(String email, String password, String rool) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(email, rool)})
+          .then((value) => postDetailsToFirestore(email, rool))
           .catchError((e) {});
     }
   }
@@ -533,6 +401,7 @@ class _RegisterState extends State<Register> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     UserModel userModel = UserModel();
+    userModel.name = nameController.text;
     userModel.email = email;
     userModel.uid = user!.uid;
     userModel.wrool = rool;

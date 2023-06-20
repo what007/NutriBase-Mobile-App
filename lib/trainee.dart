@@ -3,6 +3,7 @@ import 'package:demoapp/Screens/fitnessScreen.dart';
 import 'package:demoapp/Screens/todo_list.dart';
 import 'package:demoapp/chat/chatbot.dart';
 import 'package:demoapp/home.dart';
+import 'package:demoapp/profile.dart';
 import 'package:demoapp/src/page/day-view/day-view.dart';
 import 'package:demoapp/src/page/history/bmi_chart.dart';
 import 'package:demoapp/src/page/history/history_screen.dart';
@@ -153,7 +154,16 @@ class _StudentState extends State<Student> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        backgroundColor: Colors.purple,
         actions: [
+          IconButton(
+            onPressed: () {
+              // Code for going to profile
+              goToProfile(
+                  context); // Call the function with the appropriate context
+            },
+            icon: Icon(Icons.person),
+          ),
           IconButton(
             onPressed: () {
               logout(context);
@@ -187,6 +197,9 @@ class _StudentState extends State<Student> {
                       MaterialPageRoute(
                         builder: (context) => MenuScreen(id: id),
                       ),
+                      //  MaterialPageRoute(
+                      //   builder: (context) => ViewPosts(userId: id),
+                      // ),
                     );
                   },
                 ),
@@ -300,6 +313,15 @@ class _StudentState extends State<Student> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void goToProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => profile(),
       ),
     );
   }

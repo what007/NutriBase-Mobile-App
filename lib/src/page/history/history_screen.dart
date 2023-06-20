@@ -33,6 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             style: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          backgroundColor: Colors.purple,
         ),
         body: Container(
           child: DateTimeChart(),
