@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demoapp/view_nutri_post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +55,8 @@ class _controState extends State<contro> {
 
   routing() {
     if (rooll == 'Trainee') {
-      return Student(
+      // return Student(
+      return MenuScreen(
         id: id,
       );
     } else {
