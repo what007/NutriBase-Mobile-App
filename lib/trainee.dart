@@ -592,6 +592,25 @@ class _StudentState extends State<Student> {
                   },
                 ),
               ),
+              Opacity(
+                opacity: 0.8,
+                child: ElevatedButton.icon(
+                  icon: Icon(Icons.timeline),
+                  label: Text("About Us"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TodoList(),
+                      ),
+                    ).then((value) {
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        _scaffoldKey.currentState!.openEndDrawer();
+                      });
+                    });
+                  },
+                ),
+              ),
             ],
           ),
         ),

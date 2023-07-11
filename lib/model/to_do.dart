@@ -12,4 +12,13 @@ class Todo {
     this.details,
     this.createdDate,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'details': details,
+      'createdDate': createdDate,
+      'isComplet': isComplet,
+    };
+  }
 }

@@ -1,220 +1,283 @@
+
+import 'package:demoapp/src/services/database_services.dart';
 import 'package:flutter/material.dart';
+import 'package:demoapp/loading.dart';
+import 'package:demoapp/model/to_do.dart';
 
-import '../model/todo.dart';
-import '../helpers/colors.dart';
-import '../widgets/todo_item.dart';
-
-class fitscreen extends StatefulWidget {
-  fitscreen({Key? key}) : super(key: key);
-
+class fitness extends StatefulWidget {
   @override
-  State<fitscreen> createState() => _fitscreenState();
+  _TodoListState createState() => _TodoListState();
 }
 
-class _fitscreenState extends State<fitscreen> {
-  final todosList = ToDo.todoList();
-  List<ToDo> _foundToDo = [];
-  final _todoController = TextEditingController();
+class _TodoListState extends State<fitness> {
+  bool isComplet = false;
+  String _searchText = '';
+  TextEditingController todoTitleController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _exercisesStarted = false; // Flag to block creating new exercises
+  int _completedExercises = 0; // Counter for completed exercises
+  List<Todo> _allTodos = []; // Keep track of all todos
 
-  @override
-  void initState() {
-    _foundToDo = todosList;
-    super.initState();
+  void _runFilter(String value) {
+    setState(() {
+      _searchText = value;
+    });
+  }
+
+  void _resetExercises() {
+    setState(() {
+      _exercisesStarted = false;
+      _completedExercises = 0;
+      // Reset all todos isComplet to false
+      _allTodos.forEach((todo) {
+        DatabaseService().resetTodos();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: tdBGColor,
-      appBar: AppBar(title: const Text("To-do List")),
-      // appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 15,
-            ),
+      appBar: AppBar(
+        title: Text("Exercise List"),
+        backgroundColor: Colors.purple,
+        actions: [
+          if (_completedExercises == _allTodos.length)
+            IconButton(
+              icon: Icon(Icons.restart_alt),
+              onPressed: _resetExercises,
+            )
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.deepPurple.shade800,
+              Colors.deepPurple.shade200,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-              children: [
-                searchBox(),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                          // top: 50,
-                          bottom: 20,
-                        ),
-                        // child: Text(
-                        //   'Fitness Plans',
-                        //   style: TextStyle(
-                        //     fontSize: 30,
-                        //     fontWeight: FontWeight.w500,
-                        //   ),
-                        // ),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      _runFilter(value);
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding: EdgeInsets.all(15.0),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Theme.of(context).primaryColor,
+                        size: 25,
                       ),
-                      for (ToDo todoo in _foundToDo.reversed)
-                        ToDoItem(
-                          todo: todoo,
-                          onToDoChanged: _handleToDoChange,
-                          onDeleteItem: _deleteToDoItem,
-                        ),
-                    ],
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).primaryColor.withOpacity(0.7),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
                   ),
-                )
+                ),
+                if (_allTodos.isNotEmpty)
+                  LinearProgressIndicator(
+                    value: _completedExercises / _allTodos.length,
+                    color: Colors.green,
+                    backgroundColor: Colors.green.shade100,
+                  ),
+                Expanded(
+                  child: StreamBuilder<List<Todo>>(
+                    stream: DatabaseService().listTodos(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Loading();
+                      }
+                      _allTodos = snapshot.data ?? [];
+                      List<Todo> todos = _allTodos
+                          .where((todo) => todo.title
+                              .toLowerCase()
+                              .contains(_searchText.toLowerCase()))
+                          .toList();
+
+                      _completedExercises =
+                          todos.where((todo) => todo.isComplet).length;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 10),
+                          itemCount: todos.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              elevation: 2,
+                              child: Dismissible(
+                                key: Key(todos[index].title),
+                                background: Container(
+                                  padding: EdgeInsets.only(left: 20),
+                                  alignment: Alignment.centerLeft,
+                                  child:
+                                      Icon(Icons.delete, color: Colors.white),
+                                  color: Colors.red,
+                                ),
+                                onDismissed: (direction) async {
+                                  await DatabaseService()
+                                      .removeTodo(todos[index].uid);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text("Todo item deleted")));
+                                },
+                                child: ListTile(
+                                  onTap: () {
+                                    if (!_exercisesStarted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Cannot check off exercise before starting")));
+                                      return;
+                                    }
+                                    DatabaseService().toggleCompleteTask(
+                                        todos[index].uid,
+                                        !todos[index].isComplet);
+                                  },
+                                  leading: Container(
+                                    padding: EdgeInsets.all(2),
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: todos[index].isComplet
+                                          ? Colors.green
+                                          : Theme.of(context).primaryColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: todos[index].isComplet
+                                        ? Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          )
+                                        : Container(),
+                                  ),
+                                  title: Text(
+                                    todos[index].title,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  subtitle: Text(todos[index].details ??
+                                      ''), // Replace this with actual field
+                                  trailing: Text(todos[index].createdDate ??
+                                      ''), // Replace this with actual field
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(
-                    bottom: 20,
-                    right: 20,
-                    left: 20,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 10.0,
-                        spreadRadius: 0.0,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextField(
-                    controller: _todoController,
-                    decoration: InputDecoration(
-                        hintText: 'Add a new todo item',
-                        border: InputBorder.none),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  bottom: 20,
-                  right: 20,
-                ),
-                child: ElevatedButton(
-                  child: Text(
-                    '+',
-                    style: TextStyle(
-                      fontSize: 40,
-                    ),
-                  ),
-                  onPressed: () {
-                    _addToDoItem(_todoController.text);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: tdBlue,
-                    minimumSize: Size(60, 60),
-                    elevation: 10,
-                  ),
-                ),
-              ),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _handleToDoChange(ToDo todo) {
-    setState(() {
-      todo.isDone = !todo.isDone;
-    });
-  }
-
-  void _deleteToDoItem(String id) {
-    setState(() {
-      todosList.removeWhere((item) => item.id == id);
-    });
-  }
-
-  void _addToDoItem(String toDo) {
-    setState(() {
-      todosList.add(ToDo(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        todoText: toDo,
-      ));
-    });
-    _todoController.clear();
-  }
-
-  void _runFilter(String enteredKeyword) {
-    List<ToDo> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = todosList;
-    } else {
-      results = todosList
-          .where((item) => item.todoText!
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      _foundToDo = results;
-    });
-  }
-
-  Widget searchBox() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: TextField(
-        onChanged: (value) => _runFilter(value),
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(0),
-          prefixIcon: Icon(
-            Icons.search,
-            color: tdBlack,
-            size: 20,
-          ),
-          prefixIconConstraints: BoxConstraints(
-            maxHeight: 20,
-            minWidth: 25,
-          ),
-          border: InputBorder.none,
-          hintText: 'Search',
-          hintStyle: TextStyle(color: tdGrey),
         ),
       ),
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: tdBGColor,
-      elevation: 0,
-      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        // Icon(
-        //   Icons.menu,
-        //   color: tdBlack,
-        //   size: 30,
-        // ),
-        // Container(
-        //   height: 40,
-        //   width: 40,
-        //   child: ClipRRect(
-        //     borderRadius: BorderRadius.circular(20),
-        //     child: Image.asset('assets/images/avatar.jpeg'),
-        //   ),
-        // ),
-      ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: !_exercisesStarted
+          ? FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: Colors.grey[800],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    title: Text(
+                      "Add Exercise",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    content: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: todoTitleController,
+                            style: TextStyle(
+                              fontSize: 18,
+                              height: 1.5,
+                              color: Colors.white,
+                            ),
+                            autofocus: true,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Please enter a type of Exercise';
+                              }
+                              if (double.tryParse(value!) != null) {
+                                return 'Numeric input is not allowed';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "eg. exercise",
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.7)),
+                              border: UnderlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: width,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).primaryColor,
+                                onPrimary: Colors.white,
+                              ),
+                              child: Text(
+                                "Add",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _exercisesStarted = true;
+                                  DatabaseService().createNewTodo(
+                                      todoTitleController.text.trim());
+                                  todoTitleController.clear();
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
+          : null,
     );
   }
 }

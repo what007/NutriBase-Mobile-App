@@ -76,13 +76,44 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
+                        // TextFormField(
+                        //   controller:
+                        //       nameController, // Update the controller to use a name controller
+                        //   decoration: InputDecoration(
+                        //     filled: true,
+                        //     fillColor: Colors.white.withOpacity(0.3),
+                        //     hintText: 'Name', // Update the hintText to 'Name'
+                        //     enabled: true,
+                        //     contentPadding: const EdgeInsets.symmetric(
+                        //         vertical: 15, horizontal: 14.0),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.white),
+                        //       borderRadius: BorderRadius.circular(20),
+                        //     ),
+                        //     enabledBorder: UnderlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.white),
+                        //       borderRadius: BorderRadius.circular(20),
+                        //     ),
+                        //     prefixIcon: Icon(Icons.person_outline,
+                        //         color: Colors.white70),
+                        //   ),
+                        //   validator: (value) {
+                        //     if (value!.length == 0) {
+                        //       return "Name cannot be empty"; // Update the validation error message
+                        //     } else {
+                        //       return null;
+                        //     }
+                        //   },
+                        //   onChanged: (value) {},
+                        //   keyboardType: TextInputType
+                        //       .text, // Set the keyboardType to TextInputType.text
+                        // ),
                         TextFormField(
-                          controller:
-                              nameController, // Update the controller to use a name controller
+                          controller: nameController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.3),
-                            hintText: 'Name', // Update the hintText to 'Name'
+                            hintText: 'Name',
                             enabled: true,
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 15, horizontal: 14.0),
@@ -98,16 +129,17 @@ class _RegisterState extends State<Register> {
                                 color: Colors.white70),
                           ),
                           validator: (value) {
-                            if (value!.length == 0) {
-                              return "Name cannot be empty"; // Update the validation error message
-                            } else {
-                              return null;
+                            if (value!.isEmpty) {
+                              return "Name cannot be empty";
+                            } else if (!value.contains(RegExp(r'[a-zA-Z]'))) {
+                              return "Invalid name. Please enter a valid name with alphabets.";
                             }
+                            return null;
                           },
                           onChanged: (value) {},
-                          keyboardType: TextInputType
-                              .text, // Set the keyboardType to TextInputType.text
+                          keyboardType: TextInputType.text,
                         ),
+
                         SizedBox(
                           height: 20,
                         ),

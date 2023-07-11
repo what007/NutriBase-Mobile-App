@@ -1,3 +1,4 @@
+import 'package:demoapp/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue[900],
       ),
-      home: Register(),
+      home: SplashScreen(),
     );
   }
 }

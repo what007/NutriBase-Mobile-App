@@ -462,8 +462,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demoapp/Screens/todo_list.dart';
+import 'package:demoapp/aboutUs.dart';
 import 'package:demoapp/chat/chatbot.dart';
 import 'package:demoapp/home.dart';
+import 'package:demoapp/inquiry.dart';
 import 'package:demoapp/profile.dart';
 import 'package:demoapp/src/page/day-view/day-view.dart';
 import 'package:demoapp/src/page/history/bmi_chart.dart';
@@ -656,7 +658,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 buildDrawerItem(
                   title: 'Fitness Progress',
-                  icon: Icons.timeline,
+                  icon: Icons.insights,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -671,13 +673,45 @@ class _MenuScreenState extends State<MenuScreen> {
                   },
                 ),
                 buildDrawerItem(
+                  title: 'Inquiry',
+                  icon: Icons.question_answer,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => inquiry(),
+                      ),
+                    ).then((value) {
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        _scaffoldKey.currentState!.openEndDrawer();
+                      });
+                    });
+                  },
+                ),
+                buildDrawerItem(
                   title: 'Chat Bot',
-                  icon: Icons.chat,
+                  icon: Icons.smart_toy,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => chatbot(),
+                      ),
+                    ).then((value) {
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        _scaffoldKey.currentState!.openEndDrawer();
+                      });
+                    });
+                  },
+                ),
+                buildDrawerItem(
+                  title: 'About Us',
+                  icon: Icons.person,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => aboutus(),
                       ),
                     ).then((value) {
                       Future.delayed(Duration(milliseconds: 300), () {
